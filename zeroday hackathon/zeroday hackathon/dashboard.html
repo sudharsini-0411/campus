@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CampusInfo - Dashboard</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(to right, #4964df, #4964df);
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .logout-btn {
+      background: white;
+      color: #7f00ff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 2rem;
+    }
+
+    .about {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2rem;
+      border-radius: 16px;
+      max-width: 900px;
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    .about h3 {
+      margin-top: 0;
+      text-align: center;
+      font-size: 1.4rem;
+    }
+
+    .about p {
+      margin: 1rem 0;
+    }
+
+    .start-btn {
+      background: #ffffff;
+      color: #7f00ff;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease, transform 0.2s ease;
+      margin-top: 2rem;
+    }
+
+    .start-btn:hover {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>CampusInfo - Welcome, <span id="user-email"></span></h2>
+    <button class="logout-btn" id="logout-btn">Logout</button>
+  </header>
+
+  <main>
+    <div class="card">
+      <h2>Hello 👋</h2>
+      <p>You are now logged in to the CampusInfo dashboard.</p>
+    </div>
+
+    <div class="about">
+      <h3>Campus Dashboard Features:</h3>
+
+      <p><strong>1. Campus Announcements Feed:</strong> Admin posts important updates like events, exams, holiday notices. Students can view announcements sorted by categories and dates.</p>
+
+      <p><strong>2. Lost & Found Section:</strong> Students report or search for lost/found items with item images and locations. Smart filters based on item category and date.</p>
+
+      <p><strong>3. Mini Timetable Scheduler:</strong> Students can input and manage their weekly class schedule. Timetable displayed in calendar/grid format with edit/delete options.</p>
+
+      <p><strong>4. Hostel Complaint Registration:</strong> Raise complaints (water, electricity, cleaning, etc.) and track complaint status: pending, in-progress, resolved (admin-controlled).</p>
+
+      <p><strong>5. User Authentication System:</strong> Student and admin login/signup with role-based access. JWT or Firebase-based secure session management.</p>
+
+      <p><strong>6. Skill Exchange Marketplace:</strong> Students list skills they can teach (e.g., coding, design, languages). Others can book short peer learning sessions. Promotes collaborative upskilling within campus.</p>
+
+      <p><strong>7. Tech News & Opportunities Feed:</strong> Curated section for hackathons, internships, tech news. Keeps students updated and competitive.</p>
+
+      <p><strong>8. Polls & Feedback:</strong> Admins create polls (e.g., “Do you prefer offline exams?”). Students vote and view results. Can be used for feedback collection after events.</p>
+    </div>
+
+    <button class="start-btn" ><a href="try2.html" >Start</a></button>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDtzyucssyTPpYMLfqMFEKa0omB-cAN5ik",
+      authDomain: "register-page-f2411.firebaseapp.com",
+      projectId: "register-page-f2411",
+      storageBucket: "register-page-f2411.appspot.com",
+      messagingSenderId: "267988588138",
+      appId: "1:267988588138:web:c9a1bc7319a2dfe9f29c13"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const userEmail = document.getElementById('user-email');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userEmail.textContent = user.email;
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      signOut(auth).then(() => window.location.href = "index.html");
+    });
+  </script>
+</body>
+</html>

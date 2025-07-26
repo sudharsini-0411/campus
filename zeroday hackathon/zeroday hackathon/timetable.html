@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Class Timetable – II AIDS-D</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 10px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    td.break {
+      background-color: #f9f9f9;
+      font-weight: bold;
+    }
+    td[contenteditable="true"] {
+      background-color: #ffffe0;
+    }
+    #editButton, #saveButton {
+      margin: 10px 5px;
+      padding: 5px 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h2 style="text-align: center;">Class Timetable – II AIDS-D</h2>
+
+<button id="editButton">Enable Edit (Rep/Advisor)</button>
+<button id="saveButton" style="display: none;">Save Changes</button>
+
+<table id="timetable">
+  <thead>
+    <tr>
+      <th>Day</th>
+      <th>08:40 – 09:40</th>
+      <th>09:40 – 10:40</th>
+      <th>10:40 – 11:00</th>
+      <th>11:00 – 12:00</th>
+      <th>12:00 – 1:00</th>
+      <th>12:55 – 1:40</th>
+      <th>1:40 – 2:30</th>
+      <th>2:30 – 3:20</th>
+      <th>3:20 – 4:10</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Monday</td>
+      <td>DM</td>
+      <td>DPCO</td>
+      <td class="break" rowspan="6">TEA BREAK</td>
+      <td colspan="2">DAA LAB</td>
+      <td class="break" rowspan="6">LUNCH BREAK</td>
+      <td>JAVA</td>
+      <td>DS</td>
+      <td>LIB</td>
+    </tr>
+    <tr>
+      <td>Tuesday</td>
+      <td>DAA</td>
+      <td>TWM</td>
+      <td colspan="2">JAVA LAB</td>
+      <td>DPCO</td>
+      <td>DM</td>
+      <td>LIB</td>
+    </tr>
+    <tr>
+      <td>Wednesday</td>
+      <td colspan="2">DS LAB</td>
+      <td>DBMS</td>
+      <td>DAA</td>
+      <td colspan="2">DBMS LAB</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Thursday</td>
+      <td>DS</td>
+      <td>DM</td>
+      <td colspan="2">DBMS</td>
+      <td>JAVA</td>
+      <td>DAA</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>Friday</td>
+      <td>JAVA</td>
+      <td>DBMS</td>
+      <td colspan="2">DPCO LAB</td>
+      <td>DBMS</td>
+      <td>DM</td>
+      <td>DS</td>
+    </tr>
+    <tr>
+      <td>Saturday</td>
+      <td>DAA</td>
+      <td>COE</td>
+      <td colspan="2">COE</td>
+      <td rowspan="3"></td>
+      <td rowspan="3"></td>
+      <td rowspan="3"></td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  const editBtn = document.getElementById("editButton");
+  const saveBtn = document.getElementById("saveButton");
+  const table = document.getElementById("timetable");
+
+  // Enable edit mode
+  editBtn.addEventListener("click", function () {
+    const password = prompt("Enter password to edit timetable:");
+    
+    if (password === "rep123" || password === "advisor123") {
+      for (let row of table.rows) {
+        for (let cell of row.cells) {
+          if (!cell.classList.contains("break") && cell.tagName === "TD") {
+            cell.contentEditable = "true";
+          }
+        }
+      }
+      saveBtn.style.display = "inline-block";
+      alert("Edit mode enabled. You can now modify the timetable.");
+    } else {
+      alert("Incorrect password. You are not authorized.");
+    }
+  });
+
+  // Save changes
+  saveBtn.addEventListener("click", function () {
+    const data = [];
+    for (let i = 1; i < table.rows.length; i++) {
+      const row = [];
+      for (let cell of table.rows[i].cells) {
+        row.push(cell.innerText.trim());
+      }
+      data.push(row);
+    }
+
+    console.log("Updated Timetable:", data);
+    alert("Changes saved! Check the console for updated data.");
+
+    // Disable edit mode
+    for (let row of table.rows) {
+      for (let cell of row.cells) {
+        cell.contentEditable = "false";
+      }
+    }
+    saveBtn.style.display = "none";
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Skill Exchange Marketplace</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #007acc;
+    }
+    .btn {
+      display: inline-block;
+      margin: 0.3rem 0.3rem 0 0;
+      padding: 8px 14px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn[disabled] {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .delete-btn {
+      background-color: #e53935;
+    }
+    .form-container, .list-container {
+      max-width: 600px;
+      margin: auto;
+      margin-top: 2rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    input, textarea {
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .skill-card {
+      background: #e0f7fa;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 1rem 0;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+    }
+    .tab.active {
+      border-color: #007acc;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎓 Skill Exchange Marketplace</h1>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('list')">📋 View Skills</div>
+    <div class="tab" onclick="showTab('form')">➕ Post Skill</div>
+  </div>
+
+  <div id="list" class="list-container">
+    <div id="skillList"></div>
+  </div>
+
+  <div id="form" class="form-container" style="display: none;">
+    <form id="skillForm">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="text" name="title" placeholder="Skill Title (e.g., Python, Photoshop)" required>
+      <textarea name="description" placeholder="Describe your skill..." required></textarea>
+      <input type="number" name="maxBookings" placeholder="Max Bookings (e.g., 4)" required min="1" max="100">
+      <button class="btn" type="submit">Post Skill</button>
+    </form>
+  </div>
+
+  <script>
+    const skillListDiv = document.getElementById("skillList");
+    const skillForm = document.getElementById("skillForm");
+
+    function loadSkills() {
+      const skills = JSON.parse(localStorage.getItem("skills")) || [];
+      skillListDiv.innerHTML = "";
+
+      if (skills.length === 0) {
+        skillListDiv.innerHTML = "<p>No skills posted yet.</p>";
+        return;
+      }
+
+      skills.forEach((skill, index) => {
+        const bookingsLeft = skill.maxBookings - (skill.bookings?.length || 0);
+        const div = document.createElement("div");
+        div.className = "skill-card";
+        div.innerHTML = `
+          <h3>${skill.title}</h3>
+          <p><strong>By:</strong> ${skill.name}</p>
+          <p>${skill.description}</p>
+          <p><strong>Contact:</strong> ${skill.email}</p>
+          <p><strong>Bookings:</strong> ${skill.bookings?.length || 0}/${skill.maxBookings}</p>
+          <button class="btn" onclick="bookSkill(${index})">
+            Book This Skill
+          </button>
+          <button class="btn delete-btn" onclick="deleteSkill(${index})">🗑 Delete Skill</button>
+        `;
+        skillListDiv.appendChild(div);
+      });
+    }
+
+    skillForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const skill = {
+        name: form.name.value,
+        email: form.email.value,
+        title: form.title.value,
+        description: form.description.value,
+        maxBookings: parseInt(form.maxBookings.value),
+        bookings: []
+      };
+      const skills = JSON.parse(localStorage.getItem("skills")) || [];
+      skills.push(skill);
+      localStorage.setItem("skills", JSON.stringify(skills));
+      form.reset();
+      showTab('list');
+      loadSkills();
+      alert("✅ Skill posted successfully!");
+    });
+
+    function showTab(tabId) {
+      document.getElementById("list").style.display = tabId === "list" ? "block" : "none";
+      document.getElementById("form").style.display = tabId === "form" ? "block" : "none";
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+      document.querySelectorAll(".tab").forEach(tab => {
+        if (tab.textContent.includes(tabId === "list" ? "View" : "Post")) {
+          tab.classList.add("active");
+        }
+      });
+    }
+
+    function bookSkill(index) {
+      const studentName = prompt("Enter your name to book:");
+      if (!studentName) return;
+
+      let skills = JSON.parse(localStorage.getItem("skills")) || [];
+      let skill = skills[index];
+
+      if (!skill.bookings) skill.bookings = [];
+
+      skill.bookings.push(studentName);
+
+      // If fully booked after this booking, remove it
+      if (skill.bookings.length >= skill.maxBookings) {
+        alert("✅ Booking successful! Skill is now fully booked and will be removed.");
+        skills.splice(index, 1); // Remove the skill
+      } else {
+        alert("✅ Booking successful!");
+        skills[index] = skill;
+      }
+
+      localStorage.setItem("skills", JSON.stringify(skills));
+      loadSkills();
+    }
+
+    function deleteSkill(index) {
+      if (!confirm("Are you sure you want to delete this skill post?")) return;
+      const skills = JSON.parse(localStorage.getItem("skills")) || [];
+      skills.splice(index, 1);
+      localStorage.setItem("skills", JSON.stringify(skills));
+      loadSkills();
+    }
+
+    loadSkills();
+  </script>
+</body>
+</html>

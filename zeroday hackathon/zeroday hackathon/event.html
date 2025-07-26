@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>College Events</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background-color: #e3f2fd;
+      color: #0d47a1;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #0d47a1;
+    }
+
+    .filters {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .filters select {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 2px solid #1976d2;
+      border-radius: 5px;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .event-card {
+      background: #fffde7;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .event-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .event-content {
+      padding: 1rem;
+    }
+
+    .event-content h3 {
+      margin: 0.5rem 0;
+      color: #0f66ca;
+    }
+
+    .event-content p {
+      margin: 0.3rem 0;
+      color: #c4de2e;
+    }
+
+    @media (max-width: 600px) {
+      .filters {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Upcoming College Events</h1>
+
+  <div class="filters">
+    <select id="themeFilter">
+      <option value="all">All Themes</option>
+      <option value="tech">Tech Fest</option>
+      <option value="cultural">Cultural</option>
+      <option value="sports">Sports</option>
+      <option value="literary">Literary</option>
+      <option value="environment">Environment</option>
+    </select>
+
+    <input type="date" id="dateFilter">
+
+
+<p id="noEventsMsg" style="text-align:center; color:#b71c1c; font-weight:bold; display:none;">
+  No events scheduled.
+</p>
+  </div>
+
+  <div class="events-grid" id="eventsContainer">
+
+    <div class="event-card" data-theme="tech" data-date="2025-08-01">
+      <img src="tech.jpg" alt="Tech Event">
+      <div class="event-content">
+        <h3>Tech Innovation Fest</h3>
+        <p><strong>Date:</strong> Aug 1, 2025</p>
+        <p><strong>Time:</strong> 10:00 AM</p>
+        <p><strong>Chief Guest:</strong> Dr. A.P. Rao</p>
+        <p><strong>Theme:</strong> Tech Fest</p>
+      </div>
+    </div>
+
+    <div class="event-card" data-theme="cultural" data-date="2025-08-15">
+      <img src="cultural.jpg" alt="Cultural Event">
+      <div class="event-content">
+        <h3>Thiran 2025</h3>
+        <p><strong>Date:</strong> Aug 15, 2025</p>
+        <p><strong>Time:</strong> 4.00 PM</p>
+        <p><strong>Chief Guest:</strong> Ms.Shivaangi</p>
+        <p><strong>Theme:</strong> Cultural</p>
+      </div>
+    </div>
+
+    <div class="event-card" data-theme="sports" data-date="2025-09-05">
+      <img src="sport.jpg" alt="Sports Event">
+      <div class="event-content">
+        <h3>Annual Sports Meet</h3>
+        <p><strong>Date:</strong> Sept 5, 2025</p>
+        <p><strong>Time:</strong> 10:00 AM</p>
+        <p><strong>Chief Guest:</strong> Mrs.P.T.Usha</p>
+        <p><strong>Theme:</strong> Sports</p>
+      </div>
+    </div>
+
+    <div class="event-card" data-theme="literary" data-date="2025-10-10">
+      <img src="literature.jpg" alt="Literary Event">
+      <div class="event-content">
+        <h3>Japanese Event</h3>
+        <p><strong>Date:</strong> Oct 10, 2025</p>
+        <p><strong>Time:</strong> 10:00 AM</p>
+        <p><strong>Chief Guest:</strong> Prof. Kavitha </p>
+        <p><strong>Theme:</strong> Literary</p>
+      </div>
+    </div>
+
+    <div class="event-card" data-theme="tech" data-date="2025-07-29">
+      <img src="tech.jpg" alt="Tech Event">
+      <div class="event-content">
+        <h3>AI Talk</h3>
+        <p><strong>Date:</strong> July 29, 2025</p>
+        <p><strong>Time:</strong> 09.00 AM</p>
+        <p><strong>Chief Guest:</strong> Dr.R.Suresh</p>
+        <p><strong>Theme:</strong> Tech Fest</p>
+      </div>
+    </div>
+
+    <div class="event-card" data-theme="literary" data-date="2025-11-01">
+      <img src="literature.jpg" alt="Environment Event">
+      <div class="event-content">
+        <h3>Vietnam Event</h3>
+        <p><strong>Date:</strong> Nov 1, 2025</p>
+        <p><strong>Time:</strong> 11.00 AM</p>
+        <p><strong>Chief Guest:</strong> Ms. Saradha</p>
+        <p><strong>Theme:</strong> Literary</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+  const themeFilter = document.getElementById('themeFilter');
+  const dateFilter = document.getElementById('dateFilter');
+  const eventsContainer = document.getElementById('eventsContainer');
+  const noEventsMsg = document.getElementById('noEventsMsg');
+
+  function filterEvents() {
+    const theme = themeFilter.value;
+    const date = dateFilter.value;
+    let anyVisible = false;
+
+    const events = eventsContainer.querySelectorAll('.event-card');
+
+    events.forEach(event => {
+      const eventTheme = event.dataset.theme;
+      const eventDate = event.dataset.date;
+
+      const matchesTheme = theme === 'all' || eventTheme === theme;
+      const matchesDate = !date || eventDate === date;
+
+      const shouldDisplay = matchesTheme && matchesDate;
+      event.style.display = shouldDisplay ? 'block' : 'none';
+
+      if (shouldDisplay) {
+        anyVisible = true;
+      }
+    });
+
+    noEventsMsg.style.display = anyVisible ? 'none' : 'block';
+  }
+
+  themeFilter.addEventListener('change', filterEvents);
+  dateFilter.addEventListener('change', filterEvents);
+</script>
+
+</body>
+</html>

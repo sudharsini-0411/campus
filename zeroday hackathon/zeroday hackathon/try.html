@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Announcements</title>
+  <link rel="icon" href="seceimage.jpg">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #007bff;
+      color: #333;
+    }
+
+    .top-bar {
+      background-color: #ffc107;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-bar img {
+      height: 100px;
+    }
+
+    .top-bar span {
+      font-size: 24px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 30px;
+      padding: 60px 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .grid-button {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .grid-button:hover {
+      transform: translateY(-5px);
+      background-color: #f8f9fa;
+      cursor: pointer;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 16px;
+      color: black;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+   
+    <span>Announcements</span>
+  </div>
+
+  <div class="button-grid">
+    <div class="grid-button"><a href="event.html" class="back-link">Events</a></div>
+    <div class="grid-button"><a href="exam.html" class="back-link">Exams</a></div>
+    <div class="grid-button"><a href="holiday.html" class="back-link">Holidays</a></div>
+  </div>
+
+  <a href="try2.html" class="back-link">← Back to Dashboard</a>
+</body>
+</html>

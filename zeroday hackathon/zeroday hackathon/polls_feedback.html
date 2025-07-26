@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Polls & Feedback</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e3f2fd;
+      padding: 2rem;
+      color: #0d47a1;
+    }
+    h2 { margin-top: 2rem; }
+    .box {
+      background: #fff;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #bbb;
+    }
+    input, textarea, select, button {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0d47a1;
+    }
+    .result-bar {
+      height: 20px;
+      background: #64b5f6;
+      margin-top: 5px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📊 Polls & Feedback System</h1>
+
+  <!-- Admin Create Poll -->
+  <div class="box">
+    <h2>Admin: Create a Poll</h2>
+    <input type="text" id="pollQuestion" placeholder="Poll question">
+    <input type="text" id="pollOptions" placeholder="Options (comma separated)">
+    <button onclick="createPoll()">Add Poll</button>
+  </div>
+
+  <!-- Student Select Poll -->
+  <div class="box" id="selectSection" style="display:none;">
+    <h2>Student: Select a Poll</h2>
+    <select id="pollSelect" onchange="loadPoll()"></select>
+  </div>
+
+  <!-- Student Vote Section -->
+  <div class="box" id="voteSection" style="display:none;">
+    <h2>Vote on Poll</h2>
+    <div id="pollDisplay"></div>
+    <textarea id="feedbackText" placeholder="Any additional feedback..."></textarea>
+    <button onclick="submitVote()">Submit Vote</button>
+  </div>
+
+  <!-- Results -->
+  <div class="box" id="resultSection" style="display:none;">
+    <h2>Poll Results</h2>
+    <div id="resultDisplay"></div>
+    <h3>Student Feedback:</h3>
+    <ul id="feedbackList"></ul>
+  </div>
+
+  <script>
+    let polls = [];
+    let selectedPollIndex = -1;
+
+    function createPoll() {
+      const question = document.getElementById('pollQuestion').value.trim();
+      const options = document.getElementById('pollOptions').value.split(',').map(o => o.trim()).filter(o => o);
+
+      if (!question || options.length < 2) {
+        alert("Please enter a question and at least two options.");
+        return;
+      }
+
+      const newPoll = {
+        question,
+        options,
+        votes: options.reduce((obj, opt) => { obj[opt] = 0; return obj; }, {}),
+        feedbacks: []
+      };
+
+      polls.push(newPoll);
+      updatePollList();
+      alert("Poll added!");
+      document.getElementById('pollQuestion').value = "";
+      document.getElementById('pollOptions').value = "";
+      document.getElementById('selectSection').style.display = "block";
+    }
+
+    function updatePollList() {
+      const pollSelect = document.getElementById('pollSelect');
+      pollSelect.innerHTML = "<option value='' disabled selected>Select a poll</option>";
+      polls.forEach((poll, index) => {
+        pollSelect.innerHTML += `<option value="${index}">${poll.question}</option>`;
+      });
+    }
+
+    function loadPoll() {
+      selectedPollIndex = parseInt(document.getElementById('pollSelect').value);
+      const poll = polls[selectedPollIndex];
+      const display = document.getElementById('pollDisplay');
+
+      display.innerHTML = `
+        <h3>${poll.question}</h3>
+        <input type="text" id="studentName" placeholder="Your name or ID"><br><br>
+        ${poll.options.map(opt => `<label><input type="radio" name="option" value="${opt}"> ${opt}</label><br>`).join('')}
+      `;
+      document.getElementById('voteSection').style.display = "block";
+      document.getElementById('resultSection').style.display = "none";
+      document.getElementById('feedbackText').value = "";
+    }
+
+    function submitVote() {
+      const name = document.getElementById('studentName').value.trim();
+      const feedback = document.getElementById('feedbackText').value.trim();
+      const selected = document.querySelector('input[name="option"]:checked');
+
+      if (!name) {
+        alert("Please enter your name or ID.");
+        return;
+      }
+
+      if (!selected) {
+        alert("Please select an option.");
+        return;
+      }
+
+      const poll = polls[selectedPollIndex];
+      const choice = selected.value;
+      poll.votes[choice]++;
+      if (feedback) poll.feedbacks.push(`${name}: ${feedback}`);
+
+      showResults();
+    }
+
+    function showResults() {
+      const poll = polls[selectedPollIndex];
+      const totalVotes = Object.values(poll.votes).reduce((a, b) => a + b, 0);
+
+      const resultHTML = Object.entries(poll.votes).map(([opt, count]) => {
+        const percent = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
+        return `
+          <p>${opt}: ${count} vote(s) (${percent}%)</p>
+          <div class="result-bar" style="width:${percent}%"></div>
+        `;
+      }).join('');
+
+      document.getElementById('resultDisplay').innerHTML = resultHTML;
+      document.getElementById('feedbackList').innerHTML = poll.feedbacks.map(f => `<li>${f}</li>`).join('');
+
+      document.getElementById('resultSection').style.display = "block";
+      document.getElementById('voteSection').style.display = "none";
+    }
+  </script>
+
+</body>
+</html>

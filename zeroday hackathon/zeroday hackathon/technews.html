@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tech News & Opportunities</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e3f2fd;
+      margin: 0;
+      padding: 2rem;
+      color: #0d47a1;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1565c0;
+      margin-bottom: 2rem;
+    }
+
+    .news-feed {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 1rem;
+      border-left: 6px solid #2196f3;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .card p {
+      margin-bottom: 0.5rem;
+    }
+
+    .card a {
+      color: #1976d2;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .card span {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+   .delete-btn {
+  background-color: #2e2323;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-top: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+   }
+
+  </style>
+</head>
+<body>
+
+
+
+  <h1>🚀 Tech News & Opportunities Feed</h1>
+
+  <!-- Add New Event Form -->
+<form id="addEventForm" style="max-width:500px;margin:3rem auto;padding:1rem;background:#fff;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,0.1)">
+  <h2 style="color:#1565c0;text-align:center">➕ Add New Event</h2>
+  <input type="text" id="eventTitle" placeholder="Title" required style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:5px;">
+  <textarea id="eventDescription" placeholder="Description" required style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:5px;"></textarea>
+  <input type="text" id="eventDeadline" placeholder="Deadline or Date Info" required style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:5px;">
+  <input type="url" id="eventLink" placeholder="Link (https://...)" required style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:5px;">
+  <button type="submit" style="background:#1565c0;color:#fff;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">Add Event</button>
+</form>
+
+<script>
+  document.getElementById("addEventForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const title = document.getElementById("eventTitle").value;
+    const description = document.getElementById("eventDescription").value;
+    const deadline = document.getElementById("eventDeadline").value;
+    const link = document.getElementById("eventLink").value;
+
+    const newCard = document.createElement("div");
+    newCard.className = "card";
+    newCard.innerHTML = `
+      <h3>${title}</h3>
+      <p>${description}</p>
+      <span>${deadline}</span><br>
+      <a href="${link}" target="_blank">View</a>
+    `;
+
+    document.querySelector(".news-feed").appendChild(newCard);
+    document.getElementById("addEventForm").reset();
+  });
+</script>
+
+<script>
+  // Handle dynamic event addition
+  document.getElementById("addEventForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const title = document.getElementById("eventTitle").value;
+    const description = document.getElementById("eventDescription").value;
+    const deadline = document.getElementById("eventDeadline").value;
+    const link = document.getElementById("eventLink").value;
+
+    const newCard = document.createElement("div");
+    newCard.className = "card";
+    newCard.innerHTML = `
+      <h3>${title}</h3>
+      <p>${description}</p>
+      <span>${deadline}</span><br>
+      <a href="${link}" target="_blank">View</a><br>
+      <button class="delete-btn">🗑 Delete</button>
+    `;
+
+    newCard.querySelector(".delete-btn").addEventListener("click", function () {
+      newCard.remove();
+    });
+
+    document.querySelector(".news-feed").appendChild(newCard);
+    document.getElementById("addEventForm").reset();
+  });
+
+  // Attach delete handlers to existing static cards
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".card").forEach(function (card) {
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "🗑 Delete";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.addEventListener("click", function () {
+        card.remove();
+      });
+      card.appendChild(deleteBtn);
+    });
+  });
+</script>
+
+
+
+
+  <div class="news-feed">
+    <div class="card">
+      <h3>Smart India Hackathon 2025</h3>
+      <p>Participate in India's largest innovation competition and solve real-world problems.</p>
+      <span>Deadline: August 10, 2025</span><br>
+      <a href="https://www.sih.gov.in" target="_blank">Apply Now</a>
+    </div>
+
+    <div class="card">
+      <h3>Google Summer of Code</h3>
+      <p>Contribute to open source and earn a stipend while working with mentors from top orgs.</p>
+      <span>Deadline: April 15, 2025</span><br>
+      <a href="https://summerofcode.withgoogle.com" target="_blank">Learn More</a>
+    </div>
+
+    <div class="card">
+      <h3>Internship at Microsoft</h3>
+      <p>Summer internship openings for BTech students. Roles in SDE, PM, and Design.</p>
+      <span>Deadline: August 31, 2025</span><br>
+      <a href="https://careers.microsoft.com" target="_blank">Apply Now</a>
+    </div>
+
+    <div class="card">
+      <h3>OpenAI API Updates</h3>
+      <p>New GPT-4.5 Turbo released with massive performance improvements and lower pricing.</p>
+      <span>Posted: July 2025</span><br>
+      <a href="https://openai.com/blog" target="_blank">Read More</a>
+    </div>
+
+<div class="card">
+  <h3>TCS CodeVita Season 12</h3>
+  <p>Global coding competition by TCS for students. Solve challenges, win prizes & job offers.</p>
+  <span>Deadline: August 20, 2025</span><br>
+  <a href="https://www.tcscodevita.com" target="_blank">Register Now</a>
+</div>
+
+<div class="card">
+  <h3>MLH Fellowship – Fall 2025</h3>
+  <p>Get paid to contribute to open-source projects with mentorship and community support.</p>
+  <span>Deadline: September 1, 2025</span><br>
+  <a href="https://fellowship.mlh.io" target="_blank">Apply Here</a>
+</div>
+
+<div class="card">
+  <h3>AICTE Virtual Internship Portal</h3>
+  <p>Access 1000+ government and private sector virtual internships for Indian students.</p>
+  <span>Updated Weekly</span><br>
+  <a href="https://internship.aicte-india.org/" target="_blank">Browse Internships</a>
+</div>
+
+<div class="card">
+  <h3>GitHub Student Developer Pack</h3>
+  <p>Get free access to premium dev tools (like Canva Pro, Replit, JetBrains, etc.).</p>
+  <span>Valid for Verified Students</span><br>
+  <a href="https://education.github.com/pack" target="_blank">Claim Now</a>
+</div>
+
+<div class="card">
+  <h3>Samsung Solve for Tomorrow</h3>
+  <p>Submit tech-based ideas to solve India's key problems. Win ₹1 Crore support & mentoring.</p>
+  <span>Deadline: August 18, 2025</span><br>
+  <a href="https://www.samsung.com/in/solvefortomorrow" target="_blank">Apply Now</a>
+</div>
+
+<div class="card">
+  <h3>TechCrunch Disrupt News</h3>
+  <p>Top 5 AI startups to watch from TechCrunch Disrupt 2025 – featured innovations.</p>
+  <span>Posted: July 2025</span><br>
+  <a href="https://techcrunch.com" target="_blank">Read the Report</a>
+</div>
+
+  </div>
+
+</body>
+</html>

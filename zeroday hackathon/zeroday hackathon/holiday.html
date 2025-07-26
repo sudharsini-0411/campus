@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>2025 Holiday Calendar – II AIDS-D</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4fff7;
+    }
+
+    h1 {
+      text-align: center;
+      color: #124670;
+    }
+
+    .calendar-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .month {
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0, 128, 0, 0.1);
+    }
+
+    .month h3 {
+      text-align: center;
+      margin-top: 0;
+      color: #2878a7;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    li {
+      padding: 6px 10px;
+      margin: 5px 0;
+      background-color: #f9f9f9;
+      border-left: 5px solid #5f98c7;
+    }
+
+    li[contenteditable="true"] {
+      background-color: #ffffcc;
+    }
+
+    .button-bar {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    button {
+      margin: 5px;
+      padding: 10px 18px;
+      font-size: 16px;
+      background-color: #289fa7;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(109, 125, 227, 0.3);
+    }
+
+    button:hover {
+      background-color: rgb(37, 162, 193);
+    }
+
+    @media (max-width: 768px) {
+      .calendar-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .calendar-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>2025 Holiday Calendar – II AIDS-D</h1>
+
+<div class="button-bar">
+  <button id="editButton">Enable Edit (Rep/Advisor)</button>
+  <button id="saveButton" style="display: none;">Save Changes</button>
+</div>
+
+<div class="calendar-container" id="calendar">
+  <!-- Sample months -->
+  <div class="month">
+    <h3>January</h3>
+    <ul>
+      <li>Jan 1 – New Year's Day</li>
+      <li>Jan 4 – Saturday</li>
+      <li>Jan 5 – Sunday</li>
+      <li>Jan 11 – Saturday</li>
+      <li>Jan 12 – Sunday</li>
+      <li>Jan 15 – Pongal</li>
+      <li>Jan 18 – Saturday</li>
+      <li>Jan 19 – Sunday</li>
+      <li>Jan 25 – Saturday</li>
+      <li>Jan 26 – Republic Day</li>
+    </ul>
+  </div>
+
+  <div class="month">
+    <h3>February</h3>
+    <ul>
+      <li>Feb 1 – Saturday</li>
+      <li>Feb 2 – Sunday</li>
+      <li>Feb 8 – Saturday</li>
+      <li>Feb 9 – Sunday</li>
+      <li>Feb 15 – Saturday</li>
+      <li>Feb 16 – Sunday</li>
+      <li>Feb 22 – Saturday</li>
+      <li>Feb 23 – Sunday</li>
+    </ul>
+  </div>
+
+  <div class="month">
+    <h3>March</h3>
+    <ul>
+      <li>Mar 1 – Saturday</li>
+      <li>Mar 2 – Sunday</li>
+      <li>Mar 8 – Women’s Day</li>
+      <li>Mar 9 – Sunday</li>
+      <li>Mar 15 – Saturday</li>
+      <li>Mar 16 – Sunday</li>
+      <li>Mar 22 – Saturday</li>
+      <li>Mar 23 – Sunday</li>
+      <li>Mar 29 – Saturday</li>
+      <li>Mar 30 – Sunday</li>
+    </ul>
+  </div>
+
+  <!-- Repeat for rest of the months similarly -->
+</div>
+
+<script>
+  const editBtn = document.getElementById("editButton");
+  const saveBtn = document.getElementById("saveButton");
+  const calendar = document.getElementById("calendar");
+
+  editBtn.addEventListener("click", () => {
+    const password = prompt("Enter password to edit:");
+    if (password === "rep123" || password === "advisor123") {
+      calendar.querySelectorAll("li").forEach(item => {
+        item.contentEditable = "true";
+      });
+      saveBtn.style.display = "inline-block";
+      alert("Edit mode enabled.");
+    } else {
+      alert("Incorrect password.");
+    }
+  });
+
+  saveBtn.addEventListener("click", () => {
+    const updated = [];
+    const months = calendar.querySelectorAll(".month");
+    months.forEach(month => {
+      const monthName = month.querySelector("h3").innerText;
+      const holidays = Array.from(month.querySelectorAll("li")).map(li => li.innerText.trim());
+      updated.push({ month: monthName, holidays });
+    });
+
+    console.log("Updated Holiday Calendar:", updated);
+    alert("Changes saved! Check browser console.");
+
+    calendar.querySelectorAll("li").forEach(item => {
+      item.contentEditable = "false";
+    });
+    saveBtn.style.display = "none";
+  });
+</script>
+
+</body>
+</html>

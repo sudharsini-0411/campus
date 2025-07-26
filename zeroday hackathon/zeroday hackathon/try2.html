@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Top Section with Boxes</title>
+  <link rel="icon" href="seceimage.jpg">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #4964df; /* Full-page blue background */
+    }
+
+    .top-bar {
+      background-color: #ffc107; /* Yellow top background */
+      padding: 20px;
+      display: flex;
+      justify-content: center; /* Centers content horizontally */
+      align-items: center;     /* Centers image + text vertically */
+      gap: 10px;               /* Space between image and text */
+    }
+
+    .top-bar img {
+      height: 100px;
+      
+    
+    }
+
+    .top-bar span {
+      font-size: 24px;
+      font-weight: bold;
+      color: #000;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4)
+    }
+
+    .box-container {
+      display: flex;
+      margin-top: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 75px;
+      padding: 75px 50px ;
+    }
+
+    .box {
+      background-color: #ffffff;
+      color: #333;
+      width: 150px;
+      padding: 35px ;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      
+      font-weight: bold;
+      font-size:20px;
+      box-shadow: 4px 4px 10px rgba(17, 3, 3, 0.726);
+      transition: transform 0.2s;
+    }
+
+    .box:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+    .back-link {
+  display: block;
+  text-align:center;
+  
+  font-size: 16px;
+  color: black; /* change link color */
+  text-decoration: underline;
+}
+
+
+p{
+ font-size:30px;
+ text-align:center;}
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <img src="seceimage.jpg" alt="Logo"> 
+    <span>Sri Eshwar Dashboard</span>
+  </div>
+<p><strong><br>"You don’t have to see the whole staircase, just take the first step."</strong></p>
+
+  <div class="box-container">
+    
+    
+    <div class="box"><a href="timetable.html" class="back-link">TimeTable</a></div>
+    <div class="box"><a href="complaint.html" class="back-link">Complaint</a></div>
+    <div class="box"><a href="skill_exchange.html" class="back-link">Skills Exchange</a></div>
+    <div class="box"><a href="polls_feedback.html" class="back-link">Polls and Feedback</a></div>
+   
+    <div class="box"><a href="technews.html" class="back-link">Tech News</a></div>
+   <div class="box"><a href="try.html" class="back-link">Announcements</a></div>
+    
+
+  </div>
+
+  
+
+</body>
+</html>
